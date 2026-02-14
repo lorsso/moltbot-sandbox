@@ -174,13 +174,34 @@ if (process.env.OPENCLAW_DEV_MODE === 'true') {
 // so we don't need to patch the provider config. Writing a provider
 // entry without a models array breaks OpenClaw's config validation.
 
+// Google AI Studio direct connection (GOOGLE_AI_API_KEY + GOOGLE_AI_MODEL)
+// Priority: Direct Google AI Studio connection takes precedence over AI Gateway
+if (process.env.GOOGLE_AI_API_KEY && process.env.GOOGLE_AI_MODEL) {
+    const apiKey = process.env.GOOGLE_AI_API_KEY;
+    const modelId = process.env.GOOGLE_AI_MODEL;
+    const providerName = 'google-ai-studio';
+
+    config.models = config.models || {};
+    config.models.providers = config.models.providers || {};
+    config.models.providers[providerName] = {
+        baseUrl: 'https://generativelanguage.googleapis.com/v1beta',
+        apiKey: apiKey,
+        auth: 'api-key',
+        api: 'google-generative-ai',
+        models: [{ id: modelId, name: 'Gemini', contextWindow: 1048576, maxTokens: 8192 }],
+    };
+    config.agents = config.agents || {};
+    config.agents.defaults = config.agents.defaults || {};
+    config.agents.defaults.model = { primary: providerName + '/' + modelId };
+    console.log('Google AI Studio direct connection: model=' + modelId + ' via generativelanguage.googleapis.com');
+}
 // AI Gateway model override (CF_AI_GATEWAY_MODEL=provider/model-id)
 // Adds a provider entry for any AI Gateway provider and sets it as default model.
 // Examples:
 //   workers-ai/@cf/meta/llama-3.3-70b-instruct-fp8-fast
 //   openai/gpt-4o
 //   anthropic/claude-sonnet-4-5
-if (process.env.CF_AI_GATEWAY_MODEL) {
+else if (process.env.CF_AI_GATEWAY_MODEL) {
     const raw = process.env.CF_AI_GATEWAY_MODEL;
     const slashIdx = raw.indexOf('/');
     const gwProvider = raw.substring(0, slashIdx);
