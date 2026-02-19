@@ -195,6 +195,28 @@ if (process.env.GOOGLE_AI_API_KEY && process.env.GOOGLE_AI_MODEL) {
     config.agents.defaults.model = { primary: providerName + '/' + modelId };
     console.log('Google AI Studio direct connection: model=' + modelId + ' via generativelanguage.googleapis.com');
 }
+
+// NVIDIA API direct connection (NVIDIA_API_KEY + NVIDIA_MODEL)
+// OpenAI-compatible endpoint for models like Kimi K2
+if (process.env.NVIDIA_API_KEY && process.env.NVIDIA_MODEL) {
+    const apiKey = process.env.NVIDIA_API_KEY;
+    const modelId = process.env.NVIDIA_MODEL;
+    const providerName = 'nvidia';
+
+    config.models = config.models || {};
+    config.models.providers = config.models.providers || {};
+    config.models.providers[providerName] = {
+        baseUrl: 'https://integrate.api.nvidia.com/v1',
+        apiKey: apiKey,
+        auth: 'bearer',
+        api: 'openai-completions',
+        models: [{ id: modelId, name: 'Kimi K2', contextWindow: 1048576, maxTokens: 8192 }],
+    };
+    config.agents = config.agents || {};
+    config.agents.defaults = config.agents.defaults || {};
+    config.agents.defaults.model = { primary: providerName + '/' + modelId };
+    console.log('NVIDIA direct connection: model=' + modelId + ' via integrate.api.nvidia.com');
+}
 // AI Gateway model override (CF_AI_GATEWAY_MODEL=provider/model-id)
 // Adds a provider entry for any AI Gateway provider and sets it as default model.
 // Examples:

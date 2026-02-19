@@ -82,10 +82,11 @@ function validateRequiredEnv(env: MoltbotEnv): string[] {
   const hasAnthropicKey = !!env.ANTHROPIC_API_KEY;
   const hasOpenAIKey = !!env.OPENAI_API_KEY;
   const hasGoogleAI = !!(env.GOOGLE_AI_API_KEY && env.GOOGLE_AI_MODEL);
+  const hasNvidiaAI = !!(env.NVIDIA_API_KEY && env.NVIDIA_MODEL);
 
-if (!hasCloudflareGateway && !hasLegacyGateway && !hasAnthropicKey && !hasOpenAIKey && !hasGoogleAI) {
+if (!hasCloudflareGateway && !hasLegacyGateway && !hasAnthropicKey && !hasOpenAIKey && !hasGoogleAI && !hasNvidiaAI) {
     missing.push(
-      'ANTHROPIC_API_KEY, OPENAI_API_KEY, GOOGLE_AI_API_KEY + GOOGLE_AI_MODEL, or CLOUDFLARE_AI_GATEWAY_API_KEY + CF_AI_GATEWAY_ACCOUNT_ID + CF_AI_GATEWAY_GATEWAY_ID',
+      'ANTHROPIC_API_KEY, OPENAI_API_KEY, GOOGLE_AI_API_KEY + GOOGLE_AI_MODEL, NVIDIA_API_KEY + NVIDIA_MODEL, or CLOUDFLARE_AI_GATEWAY_API_KEY + CF_AI_GATEWAY_ACCOUNT_ID + CF_AI_GATEWAY_GATEWAY_ID',
     );
   }
 

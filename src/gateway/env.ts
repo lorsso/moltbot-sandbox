@@ -25,6 +25,8 @@ export function buildEnvVars(env: MoltbotEnv): Record<string, string> {
   if (env.OPENAI_API_KEY) envVars.OPENAI_API_KEY = env.OPENAI_API_KEY;
   if (env.GOOGLE_AI_API_KEY) envVars.GOOGLE_AI_API_KEY = env.GOOGLE_AI_API_KEY;
   if (env.GOOGLE_AI_MODEL) envVars.GOOGLE_AI_MODEL = env.GOOGLE_AI_MODEL;
+  if (env.NVIDIA_API_KEY) envVars.NVIDIA_API_KEY = env.NVIDIA_API_KEY;
+  if (env.NVIDIA_MODEL) envVars.NVIDIA_MODEL = env.NVIDIA_MODEL;
 
   // Legacy AI Gateway support: AI_GATEWAY_BASE_URL + AI_GATEWAY_API_KEY
   // When set, these override direct keys for backward compatibility
