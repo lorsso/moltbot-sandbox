@@ -208,7 +208,7 @@ if (process.env.NVIDIA_API_KEY && process.env.NVIDIA_MODEL) {
     config.models.providers[providerName] = {
         baseUrl: 'https://integrate.api.nvidia.com/v1',
         apiKey: apiKey,
-        auth: 'bearer',
+        auth: 'api-key',
         api: 'openai-completions',
         models: [{ id: modelId, name: 'Kimi K2', contextWindow: 1048576, maxTokens: 8192 }],
     };
